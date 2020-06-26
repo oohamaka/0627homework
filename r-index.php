@@ -29,19 +29,19 @@ function create($dbh, $title, $body) {
 function selectAll($dbh){
     $stmt = $dbh->prepare('SELECT * FROM memos_review ORDER BY updated_at DESC');
     $stmt -> execute();
-    return $stmt ->fetchAll(PDO::FETCH_ASSOC);  
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);  
 }
 
 //select * from memos where id = 1;
 
 // create($dbh, "PHP", "PHPから登録します!");
-$result = selectAll($dbh);
+
 
 if (!empty($_POST)){
-    $id = $_POST['id'];
     $title = $_POST['title'];
     $body = $_POST['body'];
     create($dbh,$title,$body);
+    $result = selectAll($dbh);
 }
 ?>
 

@@ -31,26 +31,29 @@ try{
     $dbh = new PDO('mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
     $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-    $sql='SELECT id,title,body FROM memos_review WHERE 1';
+    $sql='SELECT title,body FROM memos_review WHERE 1';
     $stmt = $dbh -> prepare($sql);
     $stmt ->execute();
 
     $dbh = null;
+    
 
 echo 'ファイル一覧 <br /><br />';
-
+print'<form method="POST" action="body.php">';
 while(true){
     $rec = $stmt->fetch(PDO::FETCH_ASSOC);
     if($rec == false)
     {
     break;
     }
-    echo $rec['title'];
+    echo '  title=' . $rec['title'];
+    echo 'body=' .$rec['body'];
     print'<br/>';
-    echo $rec['body'];
-    print'<br/>';
-
+//recのなかにid,title,bodyが入っている。
+    print'<input type="radio" name="body" value="'.$rec['body'].'">';
 }
+print'<input type="submit" value="送信">';
+
 }
 catch(Exception $e)
 {
@@ -58,13 +61,4 @@ catch(Exception $e)
     exit();
 }
 
-
 ?>
-
-
-<form method="POST" action="body.php">
-<a href= "r-index.php?id=<?php echo $rec['title']; ?>"><?php echo $rec['title'] ?><br></a>
-
-</form>
-</body>
-</html>
